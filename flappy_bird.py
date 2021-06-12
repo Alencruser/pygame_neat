@@ -151,7 +151,7 @@ class Base:
         win.blit(self.IMG, (self.x1, self.y))
         win.blit(self.IMG, (self.x2, self.y))
 
-def draw_window(win, bird, pipes, base, score, cont):
+def draw_window(win, bird, pipes, base, score):
     win.blit(BG_IMG, (0,0))
     for pipe in pipes:
         pipe.draw(win)
@@ -174,20 +174,17 @@ def main():
     score = 0
     
     run = True
-    cont = True
     while run:
         clock.tick(30)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-            if event.type == pygame.MOUSEBUTTONUP:
-                bird.jump()
-        if cont:bird.move()
+        bird.move()
         rem = []
         add_pipe= False
         for pipe in pipes:
             if pipe.collide(bird):
-                cont = False
+                pass
             
             if pipe.x + pipe.PIPE_TOP.get_width() < 0:
                 rem.append(pipe)
@@ -196,7 +193,7 @@ def main():
                 pipe.passed = True
                 add_pipe = True
 
-            if cont:pipe.move()
+            pipe.move()
         if add_pipe:
             score +=1
             pipes.append(Pipe(700))
@@ -205,9 +202,9 @@ def main():
             pipes.remove(r)
 
         if bird.y + bird.img.get_height() >= 730:
-            cont = False
-        if cont:base.move()
-        draw_window(win, bird, pipes, base, score, cont)
+            pass
+        base.move()
+        draw_window(win, bird, pipes, base, score)
     pygame.quit()
     quit()
 
